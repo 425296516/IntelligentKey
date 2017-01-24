@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.aigo.router">
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+
+    <application
+        android:name=".ui.application.IntelligentApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:label="场景"
+            android:screenOrientation="portrait">
+
+            <!--
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name=".ui.activity.ContactActivity"
+            android:label="联系人"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ExecuteRecordsActivity"
+            android:label="执行记录"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.DeviceManagerActivity"
+            android:label="设备管理"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.IntelligentDevice"
+            android:label="设备管理"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AddContactActivity"
+            android:label="添加联系人"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BindDeviceActivity"
+            android:label="绑定设备"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AddSceneActivity"
+            android:label="添加场景"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SelectDeviceActivity"
+            android:label="选择设备"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TriggerActivity"
+            android:label="触发条件"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ExecuteActionActivity"
+            android:label="执行动作"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.DeviceListActivity" />
+        <activity android:name=".ui.activity.GuideActivity"></activity>
+    </application>
+
+</manifest>

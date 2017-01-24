@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/edit_scene_menu"
+        android:title="编辑"
+        android:orderInCategory="100"
+        android:icon="@drawable/drw_1_edit_scene"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/add_scene_menu"
+        android:title="添加"
+        android:orderInCategory="100"
+        android:icon="@drawable/drw_1_add_scene"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/action_unlogin"
+        android:title="退出登录"
+        android:orderInCategory="100"
+
+        app:showAsAction="always"/>
+
+
+</menu>
+

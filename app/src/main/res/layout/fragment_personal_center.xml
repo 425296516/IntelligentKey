@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.PersonalCenterFragment">
+
+    <RelativeLayout
+        android:id="@+id/rl_1_contact"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/drw_1_personal_center_background_select"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="27dp"
+            android:text="联系人"
+            android:textColor="@color/color_2a2a2a"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="29dp"
+            android:src="@drawable/drw_1_personal_center_right_arrow" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_cccccc" />
+
+    <RelativeLayout
+        android:id="@+id/rl_1_execute_records"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/drw_1_personal_center_background_select"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="27dp"
+            android:text="执行记录"
+            android:textColor="@color/color_2a2a2a"
+            android:textSize="15sp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="29dp"
+            android:src="@drawable/drw_1_personal_center_right_arrow" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc" />
+
+    <RelativeLayout
+        android:id="@+id/rl_1_device_manage"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/drw_1_personal_center_background_select"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="27dp"
+            android:text="设备管理"
+            android:textColor="@color/color_2a2a2a"
+            android:textSize="15sp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="29dp"
+            android:src="@drawable/drw_1_personal_center_right_arrow" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc" />
+
+</LinearLayout>
