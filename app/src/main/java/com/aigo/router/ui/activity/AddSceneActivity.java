@@ -79,8 +79,8 @@ public class AddSceneActivity extends AppCompatActivity {
         //mNetBehaviour = (NetBehaviour) intent.getSerializableExtra("NetBehaviour");
         mTypeListBean = (NetDeviceType.TypeListBean) intent.getSerializableExtra("TypeListBean");
 
-        NetBindDeviceList.DeviceListBean deviceListBean= (NetBindDeviceList.DeviceListBean) intent.getSerializableExtra("DeviceListBean");
-        if(deviceListBean!=null){
+        NetBindDeviceList.DeviceListBean deviceListBean = (NetBindDeviceList.DeviceListBean) intent.getSerializableExtra("DeviceListBean");
+        if (deviceListBean != null) {
             mDeviceListBean = deviceListBean;
         }
 
@@ -140,7 +140,6 @@ public class AddSceneActivity extends AppCompatActivity {
         intent.putExtra("ACTION_TYPE", "EXECUTE_ACTION");
         startActivity(intent);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

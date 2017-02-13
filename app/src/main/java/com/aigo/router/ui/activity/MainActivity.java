@@ -1,5 +1,6 @@
 package com.aigo.router.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,22 +8,40 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aigo.router.R;
+import com.aigo.router.bussiness.SceneModule;
+import com.aigo.router.bussiness.bean.NetScene;
+import com.aigo.router.bussiness.bean.ResultObject;
 import com.aigo.router.ui.fragment.PersonalCenterFragment;
 import com.aigo.router.ui.fragment.SceneFragment;
 import com.aigo.router.ui.utils.ToastUtil;
 import com.aigo.usermodule.business.UserModule;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.tab_layout_bottom)
     TabLayout tabLayoutBottom;
+    @Bind(R.id.linear_select_bottom)
+    LinearLayout mLinearSelect;
+    @Bind(R.id.rl_all_select)
+    RelativeLayout rlAllSelect;
+    @Bind(R.id.radio_button)
+    RadioButton mRadioButton;
+    private boolean mSelectStatus;
+
     private boolean isPageChange;
 
     @Override
@@ -55,6 +82,143 @@ public class MainActivity extends AppCompatActivity {
         onItemSelected(mCarInsuranceFragment);
 
     }
+
+    public void startSupportActionMode(){
+        mLinearSelect.setVisibility(View.VISIBLE);
+        startSupportActionMode(mDeleteMode);
+    }
+
+    @OnClick(R.id.rl_all_select)
+    public void onClickAllSelect(){
+        if (!mSelectStatus) {
+            mSelectStatus = true;
+        } else {
+            mSelectStatus = false;
+        }
+        mRadioButton.setChecked(mSelectStatus);
+        mCarInsuranceFragment.mAdapter.setAllSelectRadio(mSelectStatus);
+    }
+
+
+    @OnClick(R.id.button_delete)
+    public void onClickDelete() {
+
+        deleteKeyDialog();
+    }
+
+    private List<NetScene.SceneListBean> mSceneBeanList;
+    private List<String> sceneIdList = new ArrayList<>();
+
+
+    public void deleteKeyDialog(){
+
+        final AlertDialog exitDialog = new AlertDialog.Builder(this, R.style.Theme_Light_Dialog).create();
+        exitDialog.show();
+        Window window = exitDialog.getWindow();
+        window.setContentView(R.layout.dialog_delete_linkman_tip);
+
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        //设置窗口高度为包裹内容
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+
+        TextView tVcontent = (TextView) window.findViewById(R.id.tv_content);
+        window.findViewById(R.id.tv_title).setVisibility(View.INVISIBLE);
+        Button ok = (Button) window.findViewById(R.id.btn_ok);
+        Button cancel = (Button) window.findViewById(R.id.btn_cancel);
+
+        tVcontent.setText("删除场景?\n删除后将不再执行条件");
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<Integer> selectList = mCarInsuranceFragment.mAdapter.getMultiSelectPositions();
+
+                mSceneBeanList = mCarInsuranceFragment.mAdapter.getDataList();
+
+                for(int i=0;i<selectList.size();i++){
+                    sceneIdList.add(mSceneBeanList.get(selectList.get(i)).getSceneId());
+                }
+
+                SceneModule.getInstance().deleteScene(sceneIdList)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.newThread())
+                        .subscribe(new Action1<ResultObject>() {
+                            @Override
+                            public void call(ResultObject resultObject) {
+                                if (resultObject.getResult().isResult()) {
+
+                                    mCarInsuranceFragment.mAdapter.notifyDataSetChanged();
+                                }
+
+                                Log.d(TAG, "MainActivity:test:getNetState:integer:" + resultObject);
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Log.d(TAG, "MainActivity:test:getNetState:error");
+                            }
+                        }, new Action0() {
+                            @Override
+                            public void call() {
+                                Log.d(TAG, "MainActivity:test:getNetState:ok");
+                            }
+                        });
+
+                exitDialog.dismiss();
+
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitDialog.dismiss();
+            }
+        });
+
+    }
+
+
+    private ActionMode.Callback mDeleteMode = new ActionMode.Callback() {
+
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            mCarInsuranceFragment.mAdapter.setIsActionModeShow(false);
+
+            //ToastUtil.showToast(getApplicationContext(),"退出");
+           mLinearSelect.setVisibility(View.GONE);
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_trigger_next, menu);
+            actionMode.setTitle("场景");
+            actionMode.getMenu().getItem(0).setTitle("完成");
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            int i = menuItem.getItemId();
+            if (i == R.id.action_next) {
+                actionMode.finish();
+                return true;
+            }
+            return false;
+        }
+    };
+
 
     private void initTabView() {
 

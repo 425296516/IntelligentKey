@@ -24,5 +24,59 @@
         app:tabMode="fixed"
         />
 
+    <LinearLayout
+        android:id="@+id/linear_select_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:id="@+id/rl_all_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ffffff"
+            android:layout_weight="1">
+
+
+            <RadioButton
+                android:id="@+id/radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColorHighlight="@color/color_979797"
+                android:shadowColor="@color/color_dddddd"
+                android:selectAllOnFocus="true"
+                android:clickable="false"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:background="@null"
+                android:text="全选" />
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@color/color_018ffd"
+            android:text="删除"
+            android:textColor="@color/color_ffffff" />
+
+    </LinearLayout>
 
 </RelativeLayout>

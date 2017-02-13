@@ -19,8 +19,16 @@
     <color name="color_333333">#333333</color>
     <color name="color_efeff4">#efeff4</color>
     <color name="color_929293">#929293</color>
+    <color name="color_f43531">#f43531</color>
+    <color name="color_979797">#979797</color>
+    <color name="color_000000">#000000</color>
+    <color name="color_0091ff">#0091ff</color>
+    <color name="color_f3f3f3">#f3f3f3</color>
+    <color name="color_8a8a8a">#8a8a8a</color>
+    <color name="color_5e5e5e">#5e5e5e</color>
+    <color name="color_606062">#606062</color>
 
-
+    <drawable name="drawable_11000000">#11000000</drawable>
 
 
 </resources>

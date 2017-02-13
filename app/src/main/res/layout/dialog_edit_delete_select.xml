@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/color_ffffff"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/ll_content_1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/drw_1_dialog_delete_tip_bg"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_content_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:text="修改备注"
+            android:textColor="@drawable/drw_1_dialog_edit_delete_select_text"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divide_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+
+    <LinearLayout
+        android:id="@+id/ll_content_2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/drw_1_dialog_delete_tip_bg"
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/tv_content_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:text="删除设备"
+            android:textColor="@drawable/drw_1_dialog_edit_delete_select_text"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divide_line_2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+
+</LinearLayout>

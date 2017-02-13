@@ -1,35 +1,37 @@
 package com.aigo.router.ui.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aigo.router.R;
 import com.aigo.router.bussiness.SceneModule;
 import com.aigo.router.bussiness.bean.NetBindDeviceList;
 import com.aigo.router.bussiness.bean.ResultObject;
-import com.aigo.router.ui.utils.ToastUtil;
+import com.aigo.router.ui.adapter.MultiSettingSelectAdapter;
+import com.aigo.router.ui.view.DividerItemDecoration;
 import com.aigo.usermodule.business.UserModule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -41,9 +43,16 @@ public class DeviceListActivity extends AppCompatActivity {
 
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
-
-    private HomeAdapter mHomeAdapter;
+    @Bind(R.id.linear_select_bottom)
+    LinearLayout mLinearSelect;
+    //private HomeAdapter mHomeAdapter;
     private List<NetBindDeviceList.DeviceListBean> deviceListBeen;
+    private MultiSettingSelectAdapter mAdapter;
+    @Bind(R.id.rl_all_select)
+    RelativeLayout rlAllSelect;
+    @Bind(R.id.radio_button)
+    RadioButton mRadioButton;
+    private boolean mSelectStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +73,26 @@ public class DeviceListActivity extends AppCompatActivity {
                     public void call(NetBindDeviceList resultObject) {
                         if (resultObject.getResult().isResult()) {
                             deviceListBeen = resultObject.getDeviceList();
+
                             recyclerView.setLayoutManager(new LinearLayoutManager(DeviceListActivity.this));
-                            mHomeAdapter = new HomeAdapter();
-                            recyclerView.setAdapter(mHomeAdapter);
+                            recyclerView.addItemDecoration(new DividerItemDecoration(DeviceListActivity.this,DividerItemDecoration.VERTICAL_LIST));
+
+                            mAdapter = new MultiSettingSelectAdapter(DeviceListActivity.this);
+                            mAdapter.addItems(deviceListBeen);
+
+                            recyclerView.setAdapter(mAdapter);
+
+                            mAdapter.setOnActionModeCallBack(new MultiSettingSelectAdapter.OnActionModeCallBack() {
+                                @Override
+                                public void showActionMode() {
+
+                                    mAdapter.setIsActionModeShow(true);
+                                    mAdapter.notifyDataSetChanged();
+
+                                    mLinearSelect.setVisibility(View.VISIBLE);
+                                    startSupportActionMode(mDeleteMode);
+                                }
+                            });
                         }
 
                         Log.d(TAG, "MainActivity:test:getNetState:integer:" + resultObject);
@@ -82,149 +108,68 @@ public class DeviceListActivity extends AppCompatActivity {
                         Log.d(TAG, "MainActivity:test:getNetState:ok");
                     }
                 });
-
-
     }
 
-    class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
-
-        @Override
-        public HomeAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            HomeAdapter.MyViewHolder holder = new HomeAdapter.MyViewHolder(LayoutInflater.from(
-                    getApplicationContext()).inflate(R.layout.item_contact_recyclerview, parent, false));
-            return holder;
+    @OnClick(R.id.rl_all_select)
+    public void onClickAllSelect(){
+        if (!mSelectStatus) {
+            mSelectStatus = true;
+        } else {
+            mSelectStatus = false;
         }
-
-        @Override
-        public void onBindViewHolder(HomeAdapter.MyViewHolder holder, final int position) {
-
-            holder.tvContactName.setText(deviceListBeen.get(position).getNotes_name());
-
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-
-                    final AlertDialog exitDialog = new AlertDialog.Builder(DeviceListActivity.this).create();
-                    exitDialog.setCancelable(true);
-                    exitDialog.show();
-                    Window window = exitDialog.getWindow();
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                    window.setContentView(R.layout.dialog_delete_device);
-
-                    TextView llDeleteDevice = (TextView) window.findViewById(R.id.tv_delete);
-                    TextView llUpdateDevice = (TextView) window.findViewById(R.id.tv_update_remark);
-
-                    llDeleteDevice.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            exitDialog.dismiss();
-                            SceneModule.getInstance().UserUnbindDevice(UserModule.getInstance().getUser().getUsername(), deviceListBeen.get(position).getDeviceSN())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribeOn(Schedulers.newThread())
-                                    .subscribe(new Action1<ResultObject>() {
-                                        @Override
-                                        public void call(ResultObject resultObject) {
-                                            if (resultObject.getResult().isResult()) {
-                                                deviceListBeen.remove(position);
-
-                                                recyclerView.getAdapter().notifyDataSetChanged();
-
-                                            }
-
-                                            Log.d(TAG, "MainActivity:test:getNetState:integer:" + resultObject);
-                                        }
-                                    }, new Action1<Throwable>() {
-                                        @Override
-                                        public void call(Throwable throwable) {
-                                            Log.d(TAG, "MainActivity:test:getNetState:error");
-                                        }
-                                    }, new Action0() {
-                                        @Override
-                                        public void call() {
-                                            Log.d(TAG, "MainActivity:test:getNetState:ok");
-                                        }
-                                    });
-                        }
-                    });
-
-                    llUpdateDevice.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            exitDialog.dismiss();
-                            setRemarkName(position);
-
-                        }
-                    });
-
-                    return false;
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-
-            return deviceListBeen.size();
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-
-            @Bind(R.id.tv_contact_name)
-            TextView tvContactName;
-
-            public MyViewHolder(View view) {
-                super(view);
-                ButterKnife.bind(this, view);
-            }
-        }
+        mRadioButton.setChecked(mSelectStatus);
+        mAdapter.setAllSelectRadio(mSelectStatus);
     }
 
-    public void setRemarkName(final int position) {
+    @OnClick(R.id.button_delete)
+    public void onClickDelete() {
 
-        // 隐藏输入法
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        // 显示或者隐藏输入法
-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        deleteKeyDialog();
+    }
 
-        final AlertDialog exitDialog = new AlertDialog.Builder(this).create();
-        exitDialog.setCancelable(true);
+    public void deleteKeyDialog(){
+
+        final AlertDialog exitDialog = new AlertDialog.Builder(this, R.style.Theme_Light_Dialog).create();
         exitDialog.show();
         Window window = exitDialog.getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        window.setContentView(R.layout.dialog_update_device);
-        final EditText mRemark = (EditText) window.findViewById(R.id.et_input_remark);
-        Button okBtn = (Button) window.findViewById(R.id.btn_ok);
-        Button cancelBtn = (Button) window.findViewById(R.id.btn_cancel);
+        window.setContentView(R.layout.dialog_delete_linkman_tip);
 
-        mRemark.setText(deviceListBeen.get(position).getNotes_name());
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        //设置窗口高度为包裹内容
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
 
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
+        TextView tVcontent = (TextView) window.findViewById(R.id.tv_content);
+        Button ok = (Button) window.findViewById(R.id.btn_ok);
+        Button cancel = (Button) window.findViewById(R.id.btn_cancel);
+
+        tVcontent.setText("场景删除后\n将会失效，并不再执行条件");
+        ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 exitDialog.dismiss();
-            }
-        });
 
-        okBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exitDialog.dismiss();
+                final List<Integer> selectList = mAdapter.getMultiSelectPositions();
 
-                SceneModule.getInstance().modifyRemark(UserModule.getInstance().getUser().getUsername(),
-                        deviceListBeen.get(position).getDeviceSN(), mRemark.getText().toString())
+                List<String> deviceSNList = new ArrayList<String>();
+                for(int i=0;i<selectList.size();i++){
+                    deviceSNList.add(deviceListBeen.get(selectList.get(i)).getDeviceSN());
+                }
+                SceneModule.getInstance().UserUnbindDevice(UserModule.getInstance().getUser().getUsername(), deviceSNList)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                         .subscribe(new Action1<ResultObject>() {
                             @Override
                             public void call(ResultObject resultObject) {
                                 if (resultObject.getResult().isResult()) {
-                                    deviceListBeen.get(position).setNotes_name(mRemark.getText().toString());
-                                    recyclerView.getAdapter().notifyItemChanged(position);
-                                    ToastUtil.showToast(getApplicationContext(), "备注成功");
-                                    Log.d(TAG, "MainActivity:test:getNetState:integer:" + resultObject);
+                                    recyclerView.getAdapter().notifyDataSetChanged();
                                 }
+
+                                Log.d(TAG, "MainActivity:test:getNetState:integer:" + resultObject);
                             }
                         }, new Action1<Throwable>() {
                             @Override
@@ -237,14 +182,57 @@ public class DeviceListActivity extends AppCompatActivity {
                                 Log.d(TAG, "MainActivity:test:getNetState:ok");
                             }
                         });
+
             }
         });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitDialog.dismiss();
+            }
+        });
+
     }
 
+    private ActionMode.Callback mDeleteMode = new ActionMode.Callback() {
+
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            mAdapter.setIsActionModeShow(false);
+
+            mLinearSelect.setVisibility(View.GONE);
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_trigger_next, menu);
+            actionMode.setTitle("智能按键");
+            actionMode.getMenu().getItem(0).setTitle("完成");
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            int i = menuItem.getItemId();
+            if (i == R.id.action_next) {
+                actionMode.finish();
+                return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_device_list, menu);
+        menu.getItem(1).setVisible(false);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -254,6 +242,12 @@ public class DeviceListActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
+        }else if(id == R.id.add_scene_edit){
+            mAdapter.setIsActionModeShow(true);
+            mAdapter.notifyDataSetChanged();
+
+            mLinearSelect.setVisibility(View.VISIBLE);
+            startSupportActionMode(mDeleteMode);
         }
         return super.onOptionsItemSelected(item);
     }

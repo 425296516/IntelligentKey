@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="230dp"
+    android:layout_height="154dp"
+    android:background="@color/color_333333"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="xxxx设备离线\n请靠近蓝牙网关或WIFI使用"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:lineSpacingExtra="15dp"
+        android:textColor="@color/color_ffffff"
+        android:textSize="14sp" />
+
+</LinearLayout>

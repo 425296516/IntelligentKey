@@ -4,13 +4,53 @@
     android:id="@+id/activity_select_device"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:layout_alignParentBottom="true"
     tools:context="com.aigo.router.ui.activity.SelectDeviceActivity">
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="155dp"
+        >
 
     </android.support.v7.widget.RecyclerView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc"
+        android:layout_above="@+id/linear_trigger"/>
+
+    <LinearLayout
+        android:id="@+id/linear_trigger"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="取消"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/color_cccccc"/>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="确定"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

@@ -11,17 +11,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.aigo.router.R;
 import com.aigo.router.bussiness.SceneModule;
 import com.aigo.router.bussiness.bean.NetDeviceList;
+import com.aigo.router.ui.view.DividerItemDecoration;
 import com.aigo.usermodule.business.UserModule;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -33,6 +36,8 @@ public class DeviceManagerActivity extends AppCompatActivity {
 
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+    @Bind(R.id.btn_add_device)
+    Button btnAddDevice;
 
     private HomeAdapter mHomeAdapter;
     //private List<NetBindDeviceList.DeviceListBean> deviceListBeen;
@@ -45,7 +50,6 @@ public class DeviceManagerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
     }
 
@@ -61,6 +65,7 @@ public class DeviceManagerActivity extends AppCompatActivity {
                         if (resultObject.getResult().isResult()) {
                             mDeviceListBeanList = resultObject.getDeviceList();
                             recyclerView.setLayoutManager(new LinearLayoutManager(DeviceManagerActivity.this));
+                            recyclerView.addItemDecoration(new DividerItemDecoration(DeviceManagerActivity.this, DividerItemDecoration.VERTICAL_LIST));
                             mHomeAdapter = new HomeAdapter();
                             recyclerView.setAdapter(mHomeAdapter);
                         }
@@ -82,14 +87,14 @@ public class DeviceManagerActivity extends AppCompatActivity {
     class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
 
         @Override
-        public HomeAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            HomeAdapter.MyViewHolder holder = new HomeAdapter.MyViewHolder(LayoutInflater.from(
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
                     getApplicationContext()).inflate(R.layout.item_devicemanager_recyclerview, parent, false));
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(HomeAdapter.MyViewHolder holder, final int position) {
+        public void onBindViewHolder(MyViewHolder holder, final int position) {
 
             holder.tvContactName.setText(mDeviceListBeanList.get(position).getTypeName());
             holder.tvContactPhone.setText(mDeviceListBeanList.get(position).getCount() + "");
@@ -98,8 +103,8 @@ public class DeviceManagerActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), DeviceListActivity.class);
-                    intent.putExtra("TITLE",mDeviceListBeanList.get(position).getTypeName());
-                    intent.putExtra("TYPE",mDeviceListBeanList.get(position).getDeviceTypeId());
+                    intent.putExtra("TITLE", mDeviceListBeanList.get(position).getTypeName());
+                    intent.putExtra("TYPE", mDeviceListBeanList.get(position).getDeviceTypeId());
                     startActivity(intent);
                 }
             });
@@ -126,10 +131,14 @@ public class DeviceManagerActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.btn_add_device)
+    public void OnClickAddDevice(){
+        Intent intent = new Intent(getApplicationContext(), BindDeviceActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       getMenuInflater().inflate(R.menu.menu_add_scene_save, menu);
-        menu.getItem(0).setTitle("添加");
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -139,10 +148,6 @@ public class DeviceManagerActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
-        }else if(id == R.id.add_scene_save){
-            Intent intent = new Intent(getApplicationContext(),BindDeviceActivity.class);
-
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

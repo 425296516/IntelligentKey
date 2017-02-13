@@ -13,4 +13,25 @@
         <attr name="bmHeight" format="dimension"></attr>
     </declare-styleable>
 
+    <style name="LinkMan.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- //actionmode浮在actionbar上面 http://stackoverflow.com/questions/26483778/display-actionmode-over-toolbar-->
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="android:actionModeBackground">@color/color_0099ff</item>
+        <item name="actionModeBackground">@color/color_0099ff</item>
+
+        <item name="colorPrimary">@color/color_0099ff</item>
+        <item name="colorPrimaryDark">@color/color_0099ff</item>
+        <item name="colorAccent">@color/color_0099ff</item>
+    </style>
+
+    <!-- 对话框样式 -->
+    <style name="Theme.Light.Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/color_ffffff</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+
 </resources>

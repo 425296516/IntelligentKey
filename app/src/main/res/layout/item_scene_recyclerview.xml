@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:layout_marginBottom="4dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="4dp"
-    android:background="@android:color/white"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="2dp"
+    android:layout_height="60dp"
+    android:id="@+id/relative_layout"
+    android:layout_centerVertical="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+    <ImageView
+        android:id="@+id/iv_scene_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/checkBox"
+        android:src="@drawable/drw_1_send_message" />
 
+    <com.aigo.router.ui.view.UISwitchButton
+        android:id="@+id/btn_scene_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp" />
 
-        <ImageView
-            android:id="@+id/iv_scene_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:src="@mipmap/ic_launcher" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_scene_icon"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_scene_description"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="80dp"
-            android:paddingLeft="22dp"
-            android:paddingRight="22dp"
             android:text="辽B1DP77"
             android:textColor="@color/color_666666"
             android:textSize="12sp" />
 
+        <ImageView
+            android:id="@+id/iv_trumpet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drw_1_trumpet" />
 
-        <com.aigo.router.ui.view.UISwitchButton
-            android:id="@+id/btn_scene_status"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp" />
+    </LinearLayout>
 
-    </RelativeLayout>
+    <RadioButton
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:selectAllOnFocus="true"
+        android:shadowColor="@color/color_dddddd"
+        android:textColorHighlight="@color/color_979797"
+        android:visibility="visible" />
 
-</android.support.v7.widget.CardView>
+</RelativeLayout>

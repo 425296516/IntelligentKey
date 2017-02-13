@@ -14,6 +14,7 @@ import com.aigo.router.bussiness.bean.NetLinkman;
 import com.aigo.router.bussiness.bean.NetScene;
 import com.aigo.router.bussiness.bean.ResultObject;
 import com.aigo.router.ui.utils.MD5Util;
+import com.aigo.usermodule.business.UserModule;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class SceneModule {
     }
 
     //2.用户解绑设备(app端调用)：UserUnbindDevice.json
-    public Observable<ResultObject> UserUnbindDevice(final String username, final String deviceSN) {
+    public Observable<ResultObject> UserUnbindDevice(final String username, final List<String> deviceSN) {
         return Observable.defer(new Func0<Observable<String>>() {
             @Override
             public Observable<String> call() {
@@ -90,7 +91,7 @@ public class SceneModule {
                 String url = "http://api.aigolife.com/device/UserUnbindDevice.json";
                 String urlStr = new StringBuffer(url)
                         .append("?username=").append(username)
-                        .append("&deviceSN=").append(deviceSN)
+                        .append("&deviceSN_list=").append(deviceSN)
                         .toString();
 
                 Log.d(TAG, urlStr);
@@ -111,7 +112,7 @@ public class SceneModule {
 
 
     //3.用户修改设备备注名(app端调用)：modifyRemark.json
-    public Observable<ResultObject> modifyRemark(final String username, final String deviceSN
+    public Observable<ResultObject> modifyRemark(final String deviceSN
             , final String remarks) {
         return Observable.defer(new Func0<Observable<String>>() {
             @Override
@@ -119,7 +120,7 @@ public class SceneModule {
 
                 String url = "http://api.aigolife.com/device/modifyRemark.json";
                 String urlStr = new StringBuffer(url)
-                        .append("?username=").append(username)
+                        .append("?username=").append(UserModule.getInstance().getUser().getUsername())
                         .append("&deviceSN=").append(deviceSN)
                         .append("&remarks=").append(remarks)
                         .toString();
@@ -224,7 +225,7 @@ public class SceneModule {
     }
 
     //7.添加用户联系人(app端调用)：addUserLinkman.json
-    public Observable<ResultObject> addUserLinkman(final String link_no, final String link_name, final String username) {
+    public Observable<NetLinkman> addUserLinkman(final String link_no, final String link_name, final String username) {
         return Observable.defer(new Func0<Observable<String>>() {
             @Override
             public Observable<String> call() {
@@ -239,12 +240,12 @@ public class SceneModule {
 
                 return NetHelper.getData(urlStr);
             }
-        }).flatMap(new Func1<String, Observable<ResultObject>>() {
+        }).flatMap(new Func1<String, Observable<NetLinkman>>() {
             @Override
-            public Observable<ResultObject> call(String s) {
+            public Observable<NetLinkman> call(String s) {
 
                 Log.d(TAG, s);
-                ResultObject result = new Gson().fromJson(s, ResultObject.class);
+                NetLinkman result = new Gson().fromJson(s, NetLinkman.class);
 
                 return Observable.just(result);
             }
@@ -288,6 +289,7 @@ public class SceneModule {
                         .append("?link_id=").append(link_id)
                         .append("&link_no=").append(link_no)
                         .append("&link_name=").append(link_name)
+                        .append("&username=").append(UserModule.getInstance().getUser().getUsername())
                         .toString();
 
                 Log.d(TAG, urlStr);
@@ -307,25 +309,27 @@ public class SceneModule {
     }
 
     //10.删除用户联系人(app端调用)：deleteUserLinkman.json
-    public Observable<ResultObject> deleteUserLinkman(final String link_id) {
+    public Observable<NetLinkman> deleteUserLinkman(final List<String> linkList) {
         return Observable.defer(new Func0<Observable<String>>() {
             @Override
             public Observable<String> call() {
 
                 String url = "http://api.aigolife.com/device/deleteUserLinkman.json";
                 String urlStr = new StringBuffer(url)
-                        .append("?link_id=").append(link_id).toString();
+                        .append("?linkList=").append(linkList)
+                        .append("&username=").append(UserModule.getInstance().getUser().getUsername())
+                        .toString();
 
                 Log.d(TAG, urlStr);
 
                 return NetHelper.getData(urlStr);
             }
-        }).flatMap(new Func1<String, Observable<ResultObject>>() {
+        }).flatMap(new Func1<String, Observable<NetLinkman>>() {
             @Override
-            public Observable<ResultObject> call(String s) {
+            public Observable<NetLinkman> call(String s) {
 
                 Log.d(TAG, s);
-                ResultObject result = new Gson().fromJson(s, ResultObject.class);
+                NetLinkman result = new Gson().fromJson(s, NetLinkman.class);
 
                 return Observable.just(result);
             }

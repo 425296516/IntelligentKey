@@ -70,7 +70,6 @@ public class SelectDeviceActivity extends AppCompatActivity {
                     public void call(NetDeviceType resultObject) {
                         if (resultObject.getResult().isResult()) {
                             mTypeListBean = resultObject.getTypeList();
-
                             recyclerView.setLayoutManager(new GridLayoutManager(SelectDeviceActivity.this, 2));
                             recyclerView.setAdapter(new HomeAdapter());
                         }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/add_scene_edit"
+        android:title="编辑"
+        android:orderInCategory="200"
+        android:icon="@drawable/drw_1_edit_scene"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/add_scene_finish"
+        android:title="完成"
+        android:orderInCategory="200"
+
+        app:showAsAction="always"/>
+
+</menu>
+

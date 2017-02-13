@@ -7,13 +7,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.aigo.router.R;
@@ -88,8 +92,8 @@ public class TriggerActivity extends AppCompatActivity {
 
     @OnClick(R.id.tv_select_key)
     public void OnClickSelectKey() {
-
-        exitDialog = new AlertDialog.Builder(this).create();
+       // showPopupWindow();
+       exitDialog = new AlertDialog.Builder(this).create();
         exitDialog.setCancelable(true);
         exitDialog.show();
         Window window = exitDialog.getWindow();
@@ -175,4 +179,63 @@ public class TriggerActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void showPopupWindow() {
+
+        // 一个自定义的布局，作为显示的内容
+        View contentView = LayoutInflater.from(this).inflate(
+                R.layout.dlg_trigger_bind_device, null);
+        // 设置按钮的点击事件
+        TextView button = (TextView) contentView.findViewById(R.id.tv_cancel);
+        TextView baiduNavi = (TextView)contentView.findViewById(R.id.tv_confirm);
+
+        RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recycler_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        HomeAdapter mHomeAdapter = new HomeAdapter();
+        recyclerView.setAdapter(mHomeAdapter);
+
+        final PopupWindow popupWindow = new PopupWindow(contentView,
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        popupWindow.setTouchable(true);
+
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return false;
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                popupWindow.dismiss();
+            }
+        });
+
+        baiduNavi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                popupWindow.dismiss();
+            }
+        });
+
+        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+        // 我觉得这里是API的一个bug
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.drawable_11000000));
+
+        popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
+
 }

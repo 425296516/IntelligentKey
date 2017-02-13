@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/drw_1_juxing_white"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="提示"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/color_000000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="删除联系人？\n和联系人有关的场景将失效"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:lineSpacingExtra="8dp"
+        android:textColor="@color/color_000000"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@drawable/drw_1_dialog_delete_tip_text"
+            android:textSize="14sp"
+            android:background="@drawable/drw_1_dialog_delete_tip_bg"
+            android:gravity="center"
+            android:text="取消"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="38dp"
+            android:background="@color/color_cccccc" />
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:textColor="@drawable/drw_1_dialog_delete_tip_text"
+            android:textSize="14sp"
+            android:background="@drawable/drw_1_dialog_delete_tip_bg"
+            android:gravity="center"
+            android:text="确定"/>
+
+    </LinearLayout>
+
+</LinearLayout>

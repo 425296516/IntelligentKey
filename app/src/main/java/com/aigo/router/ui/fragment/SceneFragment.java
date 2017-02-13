@@ -29,7 +29,10 @@ import com.aigo.router.bussiness.bean.NetScene;
 import com.aigo.router.bussiness.bean.ResultObject;
 import com.aigo.router.ui.activity.AddSceneActivity;
 import com.aigo.router.ui.activity.BindDeviceActivity;
+import com.aigo.router.ui.activity.MainActivity;
+import com.aigo.router.ui.adapter.EditSceneMultipleAdapter;
 import com.aigo.router.ui.utils.ToastUtil;
+import com.aigo.router.ui.view.DividerItemDecoration;
 import com.aigo.router.ui.view.UISwitchButton;
 import com.aigo.usermodule.business.UserModule;
 
@@ -159,7 +162,25 @@ public class SceneFragment extends Fragment {
 
                             mSceneBeanList = resultObject.getSceneList();
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            recyclerView.setAdapter(new HomeAdapter());
+                            recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
+
+                            mAdapter = new EditSceneMultipleAdapter(getActivity());
+                            mAdapter.addItems(mSceneBeanList);
+
+                            recyclerView.setAdapter(mAdapter);
+
+                            mAdapter.setOnActionModeCallBack(new EditSceneMultipleAdapter.OnActionModeCallBack() {
+
+                                @Override
+                                public void showActionMode() {
+
+                                    mAdapter.setIsActionModeShow(true);
+                                    mAdapter.notifyDataSetChanged();
+
+                                    ((MainActivity)getActivity()).startSupportActionMode();
+
+                                }
+                            });
 
                             Log.d(TAG, "MainActivity:test:getNetState:integer:" + resultObject);
                         }
@@ -179,13 +200,15 @@ public class SceneFragment extends Fragment {
 
     }
 
+    public EditSceneMultipleAdapter mAdapter;
+
     private List<NetScene.SceneListBean> mSceneBeanList;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        offLineDialog();
     }
 
     @OnClick(R.id.btn_add_scene)
@@ -228,6 +251,30 @@ public class SceneFragment extends Fragment {
                 exitDialog.dismiss();
             }
         });
+
+    }
+
+    public void offLineDialog(){
+
+        final AlertDialog exitDialog = new AlertDialog.Builder(getActivity(),AlertDialog.THEME_TRADITIONAL).create();
+        exitDialog.setCanceledOnTouchOutside(true);
+        exitDialog.show();
+        Window window = exitDialog.getWindow();
+        window.setContentView(R.layout.dialog_offline_device);
+
+
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        //设置窗口高度为包裹内容
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+
+        TextView tVcontent = (TextView) window.findViewById(R.id.tv_content);
+
+        tVcontent.setText("xxxx设备离线\n请靠近蓝牙网关或WIFI使用");
 
     }
 

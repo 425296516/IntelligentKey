@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,6 +15,7 @@ import com.aigo.router.bussiness.SceneModule;
 import com.aigo.router.bussiness.bean.NetGetVerifyCode;
 import com.aigo.router.bussiness.bean.ResultObject;
 import com.aigo.router.ui.utils.ToastUtil;
+import com.aigo.router.ui.view.DelayButton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,7 +34,7 @@ public class AddContactActivity extends AppCompatActivity {
     @Bind(R.id.et_input_phone)
     EditText etInputPhone;
     @Bind(R.id.btn_verification_code)
-    Button btnVerificationCode;
+    DelayButton btnVerificationCode;
     @Bind(R.id.et_input_verification_code)
     EditText etInputVerificationCode;
     @Bind(R.id.btn_finish)
@@ -50,19 +52,23 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_verification_code)
-    public void OnClickVerficationCode() {
+    public void OnClickVerficationCode(final View view) {
+
+
         SceneModule.getInstance().getPhoneVerifyCode(etInputPhone.getText().toString())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Action1<NetGetVerifyCode>() {
                     @Override
                     public void call(NetGetVerifyCode netGetVerifyCode) {
+                        ((DelayButton) view).delay(60);
                         mNetGetVerifyCode = netGetVerifyCode;
                         Log.d(TAG, "MainActivity:test:getNetState:integer:" + netGetVerifyCode);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        ((DelayButton) view).stop();
                         Log.d(TAG, "MainActivity:test:getNetState:error");
                     }
                 }, new Action0() {

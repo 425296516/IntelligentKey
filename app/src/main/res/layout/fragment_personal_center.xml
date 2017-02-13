@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_efeff4"
     tools:context=".ui.fragment.PersonalCenterFragment">
 
     <RelativeLayout
@@ -12,15 +13,6 @@
         android:background="@drawable/drw_1_personal_center_background_select"
         android:gravity="center_vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="27dp"
-            android:text="联系人"
-            android:textColor="@color/color_2a2a2a"
-            android:textSize="15sp" />
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,6 +20,28 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="29dp"
             android:src="@drawable/drw_1_personal_center_right_arrow" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/drw_1_linkman"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="9dp"
+            android:id="@+id/imageView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:text="联系人"
+            android:textColor="@color/color_2a2a2a"
+            android:textSize="15sp"
+            android:layout_alignTop="@+id/imageView2"
+            android:layout_toEndOf="@+id/imageView2"
+            android:layout_marginStart="12dp"
+            android:id="@+id/textView8" />
 
 
     </RelativeLayout>
@@ -50,15 +64,21 @@
         android:background="@drawable/drw_1_personal_center_background_select"
         android:gravity="center_vertical">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/drw_1_execute_record"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="27dp"
-            android:text="执行记录"
-            android:textColor="@color/color_2a2a2a"
-            android:textSize="15sp" />
+            android:id="@+id/imageView4" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="45dp"
+            android:src="@drawable/drw_1_shape_circle_f43531" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -67,6 +87,18 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="29dp"
             android:src="@drawable/drw_1_personal_center_right_arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:text="执行记录"
+            android:textColor="@color/color_2a2a2a"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/imageView4"
+            android:layout_marginStart="8dp"
+            android:id="@+id/textView4" />
 
 
     </RelativeLayout>
@@ -83,15 +115,6 @@
         android:background="@drawable/drw_1_personal_center_background_select"
         android:gravity="center_vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="27dp"
-            android:text="设备管理"
-            android:textColor="@color/color_2a2a2a"
-            android:textSize="15sp" />
-
 
         <ImageView
             android:layout_width="wrap_content"
@@ -100,6 +123,28 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="29dp"
             android:src="@drawable/drw_1_personal_center_right_arrow" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/drw_1_device_manager"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="9dp"
+            android:id="@+id/imageView3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:text="设备管理"
+            android:textColor="@color/color_2a2a2a"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/imageView3"
+            android:layout_marginStart="12dp"
+            android:id="@+id/textView6" />
 
     </RelativeLayout>
 

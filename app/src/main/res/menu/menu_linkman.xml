@@ -2,10 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item android:id="@+id/edit_linkman_menu"
+        android:title="编辑"
+        android:orderInCategory="200"
+        android:icon="@drawable/drw_1_edit_scene"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/add_linkman_menu"
         android:title="添加"
         android:orderInCategory="200"
-
+        android:icon="@drawable/drw_1_add_scene"
         app:showAsAction="always"/>
 
 </menu>
