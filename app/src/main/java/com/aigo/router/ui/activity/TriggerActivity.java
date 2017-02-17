@@ -1,6 +1,5 @@
 package com.aigo.router.ui.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +10,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -82,31 +78,13 @@ public class TriggerActivity extends AppCompatActivity {
                         Log.d(TAG, "MainActivity:test:getNetState:ok");
                     }
                 });
-
-
-
-
     }
 
-    private AlertDialog exitDialog;
 
     @OnClick(R.id.tv_select_key)
     public void OnClickSelectKey() {
-       // showPopupWindow();
-       exitDialog = new AlertDialog.Builder(this).create();
-        exitDialog.setCancelable(true);
-        exitDialog.show();
-        Window window = exitDialog.getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        window.setContentView(R.layout.dlg_trigger_bind_device);
 
-        final RecyclerView recyclerView = (RecyclerView) window.findViewById(R.id.recycler_view);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        HomeAdapter mHomeAdapter = new HomeAdapter();
-        recyclerView.setAdapter(mHomeAdapter);
-
+        showPopupWindow();
     }
 
     private NetBindDeviceList.DeviceListBean mDeviceListBean;
@@ -116,14 +94,14 @@ public class TriggerActivity extends AppCompatActivity {
         @Override
         public HomeAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             HomeAdapter.MyViewHolder holder = new HomeAdapter.MyViewHolder(LayoutInflater.from(
-                    getApplicationContext()).inflate(R.layout.item_contact_recyclerview, parent, false));
+                    getApplicationContext()).inflate(R.layout.item_bind_device_trigger, parent, false));
             return holder;
         }
 
         @Override
         public void onBindViewHolder(HomeAdapter.MyViewHolder holder, final int position) {
 
-            holder.tvContactName.setText(mDeviceListBeanList.get(position).getNotes_name());
+            holder.tvBindDevice.setText(mDeviceListBeanList.get(position).getNotes_name());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,7 +109,7 @@ public class TriggerActivity extends AppCompatActivity {
                     mDeviceListBean = mDeviceListBeanList.get(position);
 
                     btnSelectKey.setText(mDeviceListBeanList.get(position).getNotes_name());
-                    exitDialog.dismiss();
+                    popupWindow.dismiss();
                 }
             });
 
@@ -145,11 +123,8 @@ public class TriggerActivity extends AppCompatActivity {
 
         class MyViewHolder extends RecyclerView.ViewHolder {
 
-            @Bind(R.id.tv_contact_name)
-            TextView tvContactName;
-            @Bind(R.id.tv_contact_phone)
-            TextView tvContactPhone;
-
+            @Bind(R.id.tv_bind_device)
+            TextView tvBindDevice;
             public MyViewHolder(View view) {
                 super(view);
                 ButterKnife.bind(this, view);
@@ -180,6 +155,7 @@ public class TriggerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    PopupWindow popupWindow;
     private void showPopupWindow() {
 
         // 一个自定义的布局，作为显示的内容
@@ -195,21 +171,12 @@ public class TriggerActivity extends AppCompatActivity {
         HomeAdapter mHomeAdapter = new HomeAdapter();
         recyclerView.setAdapter(mHomeAdapter);
 
-        final PopupWindow popupWindow = new PopupWindow(contentView,
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        float height =  getWindow().getDecorView().getHeight();
+
+        popupWindow = new PopupWindow(contentView,
+                LinearLayout.LayoutParams.MATCH_PARENT, (int)(height*3/10), true);
 
         popupWindow.setTouchable(true);
-
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                return false;
-                // 这里如果返回true的话，touch事件将被拦截
-                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-            }
-        });
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -233,7 +200,7 @@ public class TriggerActivity extends AppCompatActivity {
         // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
         // 我觉得这里是API的一个bug
         popupWindow.setBackgroundDrawable(getResources().getDrawable(
-                R.drawable.drawable_11000000));
+                R.drawable.drawable_ffffff));
 
         popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }

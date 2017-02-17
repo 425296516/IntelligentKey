@@ -65,6 +65,9 @@ public class DeviceListActivity extends AppCompatActivity {
         String type = getIntent().getStringExtra("TYPE");
         setTitle(getIntent().getStringExtra("TITLE"));
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(DeviceListActivity.this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(DeviceListActivity.this,DividerItemDecoration.VERTICAL_LIST));
+
         SceneModule.getInstance().getUserBindDeviceList(UserModule.getInstance().getUser().getUsername(), "" + type)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
@@ -73,9 +76,6 @@ public class DeviceListActivity extends AppCompatActivity {
                     public void call(NetBindDeviceList resultObject) {
                         if (resultObject.getResult().isResult()) {
                             deviceListBeen = resultObject.getDeviceList();
-
-                            recyclerView.setLayoutManager(new LinearLayoutManager(DeviceListActivity.this));
-                            recyclerView.addItemDecoration(new DividerItemDecoration(DeviceListActivity.this,DividerItemDecoration.VERTICAL_LIST));
 
                             mAdapter = new MultiSettingSelectAdapter(DeviceListActivity.this);
                             mAdapter.addItems(deviceListBeen);
@@ -157,7 +157,9 @@ public class DeviceListActivity extends AppCompatActivity {
 
                 List<String> deviceSNList = new ArrayList<String>();
                 for(int i=0;i<selectList.size();i++){
-                    deviceSNList.add(deviceListBeen.get(selectList.get(i)).getDeviceSN());
+
+                    String deviceSN = deviceListBeen.get(selectList.get(i)).getDeviceSN().replace(":", "").toLowerCase();
+                    deviceSNList.add(deviceSN);
                 }
                 SceneModule.getInstance().UserUnbindDevice(UserModule.getInstance().getUser().getUsername(), deviceSNList)
                         .observeOn(AndroidSchedulers.mainThread())

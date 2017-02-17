@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class AddSceneActivity extends AppCompatActivity {
     ImageView btnAddMethod;
     @Bind(R.id.iv_add_action)
     ImageView btnAddAction;
+    @Bind(R.id.iv_trumpet)
+    ImageView ivTrumpet;
     @Bind(R.id.tv_trigger)
     TextView tvTrigger;
     @Bind(R.id.tv_add_action)
@@ -65,7 +68,25 @@ public class AddSceneActivity extends AppCompatActivity {
             executeId = mSceneListBean.getExecuteId();
             tvTrigger.setText(mSceneListBean.getTriggerName());
             tvAddAction.setText(mSceneListBean.getExecuteName());
-            btnSceneStatus.setChecked(mSceneListBean.getIsPush().equals("1") ? true : false);
+
+            if(mSceneListBean.getIsPush().equals("1")){
+                btnSceneStatus.setChecked(true);
+                ivTrumpet.setImageResource(R.drawable.drw_1_trumpet);
+            }else{
+                btnSceneStatus.setChecked(false);
+                ivTrumpet.setImageResource(R.drawable.drw_1_trumpet_offline);
+            }
+
+            btnSceneStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        ivTrumpet.setImageResource(R.drawable.drw_1_trumpet);
+                    }else{
+                        ivTrumpet.setImageResource(R.drawable.drw_1_trumpet_offline);
+                    }
+                }
+            });
         }
 
     }

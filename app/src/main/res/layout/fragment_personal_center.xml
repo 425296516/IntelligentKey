@@ -9,7 +9,8 @@
     <RelativeLayout
         android:id="@+id/rl_1_contact"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/drw_1_personal_center_background_select"
         android:gravity="center_vertical">
 
@@ -54,13 +55,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="19dp"
         android:background="@color/color_cccccc" />
 
     <RelativeLayout
         android:id="@+id/rl_1_execute_records"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="57dp"
         android:background="@drawable/drw_1_personal_center_background_select"
         android:gravity="center_vertical">
 
@@ -111,7 +112,7 @@
     <RelativeLayout
         android:id="@+id/rl_1_device_manage"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="57dp"
         android:background="@drawable/drw_1_personal_center_background_select"
         android:gravity="center_vertical">
 

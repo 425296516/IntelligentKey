@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,13 +17,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.aigo.router.R;
 import com.aigo.router.bussiness.SceneModule;
 import com.aigo.router.bussiness.bean.ExecuteRecords;
+import com.aigo.router.bussiness.bean.NetDeviceList;
 import com.aigo.router.ui.view.DividerItemDecoration;
 import com.aigo.router.ui.view.PickerView;
+import com.aigo.usermodule.business.UserModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+
+import static com.aigo.router.ui.utils.TimeUtil.getDay;
+import static com.aigo.router.ui.utils.TimeUtil.getDayAndWeek;
+import static com.aigo.router.ui.utils.TimeUtil.getHourMinute;
+import static com.aigo.router.ui.utils.TimeUtil.getNowMonth;
+import static com.aigo.router.ui.utils.TimeUtil.getNowYear;
 
 public class ExecuteRecordsActivity extends AppCompatActivity {
 
@@ -55,7 +66,11 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
     ImageView ivSelectArrow;
 
     private HomeAdapter mHomeAdapter;
-    private List<ExecuteRecords.LogListBean> mLogListBeen;
+    private List<ExecuteRecords.LogListBean> mLogListBeen = new ArrayList<>();
+    private static final int TITLE = 1;
+    private static final int CONTENT = 2;
+    private int mCurrentDay;
+    private List<NetDeviceList.DeviceListBean.DeviceBean> mDeviceBeanList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +81,53 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        SceneModule.getInstance().getSceneLog("ceshi1", 2017, 1)
+        tvYear.setText(getNowYear() + "");
+        tvMonth.setText(getNowMonth() + "");
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(ExecuteRecordsActivity.this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(ExecuteRecordsActivity.this, DividerItemDecoration.VERTICAL_LIST));
+
+        loadExecuteRecordData(getNowYear(), getNowMonth(), "");
+
+        loadDeviceList();
+
+    }
+
+    public void loadDeviceList() {
+
+        SceneModule.getInstance().getAllUserDeviceList(UserModule.getInstance().getUser().getUsername())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Action1<NetDeviceList>() {
+                    @Override
+                    public void call(NetDeviceList resultObject) {
+                        if (resultObject.getResult().isResult()) {
+                            NetDeviceList.DeviceListBean.DeviceBean deviceBean = new NetDeviceList.DeviceListBean.DeviceBean();
+                            deviceBean.setRemarks("全部");
+                            mDeviceBeanList.add(deviceBean);
+
+                            for (int i = 0; i < resultObject.getDeviceList().size(); i++) {
+                                mDeviceBeanList.addAll(resultObject.getDeviceList().get(i).getDevice());
+                            }
+                        }
+                        Log.d(TAG, "MainActivity:test:getNetState:integer:" + resultObject);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.d(TAG, "MainActivity:test:getNetState:error");
+                    }
+                }, new Action0() {
+                    @Override
+                    public void call() {
+                        Log.d(TAG, "MainActivity:test:getNetState:ok");
+                    }
+                });
+
+    }
+
+    public void loadExecuteRecordData(int year, int month, String deviceSn) {
+        SceneModule.getInstance().getSceneLog("ceshi1", year, month, deviceSn)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Action1<ExecuteRecords>() {
@@ -75,8 +136,25 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
 
                         mLogListBeen = resultObject.getLogList();
 
-                        recyclerView.setLayoutManager(new LinearLayoutManager(ExecuteRecordsActivity.this));
-                        recyclerView.addItemDecoration(new DividerItemDecoration(ExecuteRecordsActivity.this, DividerItemDecoration.VERTICAL_LIST));
+                        for (int i = 0; i < resultObject.getLogList().size(); i++) {
+
+                            if (i == 0) {
+                                mCurrentDay = getDay(resultObject.getLogList().get(i).getExecuteTime());
+                                ExecuteRecords.LogListBean logListBean = new ExecuteRecords.LogListBean();
+                                logListBean.setType(1);
+                                logListBean.setExecuteTime(resultObject.getLogList().get(i).getExecuteTime());
+                                mLogListBeen.add(0, logListBean);
+                            } else {
+
+                                if (getDay(mLogListBeen.get(i).getExecuteTime()) != mCurrentDay) {
+                                    mCurrentDay = getDay(resultObject.getLogList().get(i).getExecuteTime());
+                                    ExecuteRecords.LogListBean logListBean = new ExecuteRecords.LogListBean();
+                                    logListBean.setType(1);
+                                    logListBean.setExecuteTime(resultObject.getLogList().get(i).getExecuteTime());
+                                    mLogListBeen.add(i, logListBean);
+                                }
+                            }
+                        }
 
                         mHomeAdapter = new HomeAdapter();
                         recyclerView.setAdapter(mHomeAdapter);
@@ -94,11 +172,10 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
                         Log.d(TAG, "MainActivity:test:getNetState:ok");
                     }
                 });
-
     }
 
-     String year ;
-     String month ;
+    String year;
+    String month;
 
     @OnClick(R.id.iv_month_arrow)
     public void onClickMonthArrow() {
@@ -125,10 +202,10 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
         List<String> data = new ArrayList<String>();
         List<String> seconds = new ArrayList<String>();
         for (int i = 2000; i < 2020; i++) {
-            data.add(i+"");
+            data.add(i + "");
         }
         for (int i = 1; i < 13; i++) {
-            seconds.add(i < 10 ? "0" + i: "" + i);
+            seconds.add(i < 10 ? "0" + i : "" + i);
         }
 
         minute_pv.setData(data);
@@ -136,7 +213,7 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
 
             @Override
             public void onSelect(String text) {
-               year = text;
+                year = text;
             }
         });
         second_pv.setData(seconds);
@@ -149,19 +226,21 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
         });
 
         minute_pv.setSelected(Integer.parseInt(tvYear.getText().toString()));
-        second_pv.setSelected(Integer.parseInt(tvMonth.getText().toString())-1);
+        second_pv.setSelected(Integer.parseInt(tvMonth.getText().toString()) - 1);
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!TextUtils.isEmpty(year)){
+                if (!TextUtils.isEmpty(year)) {
                     tvYear.setText(year);
                 }
 
-                if(!TextUtils.isEmpty(month)){
+                if (!TextUtils.isEmpty(month)) {
                     tvMonth.setText(month);
                 }
+
+                loadExecuteRecordData(Integer.parseInt(tvYear.getText().toString()), Integer.parseInt(tvMonth.getText().toString()), (mDeviceSN == null ? "" : mDeviceSN));
 
                 exitDialog.dismiss();
 
@@ -177,22 +256,156 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
 
     }
 
-    class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
+    @OnClick(R.id.tv_select)
+    public void onClickSelect() {
+        showPopupWindow();
+    }
+
+    PopupWindow popupWindow;
+
+    private void showPopupWindow() {
+
+        // 一个自定义的布局，作为显示的内容
+        View contentView = LayoutInflater.from(this).inflate(
+                R.layout.dlg_trigger_bind_device, null);
+        // 设置按钮的点击事件
+        TextView button = (TextView) contentView.findViewById(R.id.tv_cancel);
+        TextView baiduNavi = (TextView) contentView.findViewById(R.id.tv_confirm);
+
+        RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recycler_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(ExecuteRecordsActivity.this));
+        recyclerView.setAdapter(new SelectDeviceAdapter());
+
+        float height = getWindow().getDecorView().getHeight();
+
+        popupWindow = new PopupWindow(contentView,
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) (height * 3 / 10), true);
+
+        popupWindow.setTouchable(true);
+
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                popupWindow.dismiss();
+            }
+        });
+
+        baiduNavi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                popupWindow.dismiss();
+            }
+        });
+
+        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+        // 我觉得这里是API的一个bug
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.drawable_ffffff));
+
+        popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
+
+    private String mDeviceSN;
+
+    class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapter.ViewHolder> {
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
-                    getApplicationContext()).inflate(R.layout.item_execute_record_recyclewview, parent, false));
+        public SelectDeviceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            SelectDeviceAdapter.ViewHolder holder = new SelectDeviceAdapter.ViewHolder(LayoutInflater.from(
+                    getApplicationContext()).inflate(R.layout.item_bind_device_trigger, parent, false));
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, final int position) {
+        public void onBindViewHolder(SelectDeviceAdapter.ViewHolder holder, final int position) {
 
-            holder.tvDeviceName.setText(mLogListBeen.get(position).getTrigger_device_name());
-            holder.tvExecuteTrigger.setText(mLogListBeen.get(position).getExecuteInfo() + "");
-            holder.tvTime.setText(mLogListBeen.get(position).getExecuteTime());
+            holder.tvBindDevice.setText(mDeviceBeanList.get(position).getRemarks());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (position == 0) {
+                        mDeviceSN = null;
+                    } else {
+                        mDeviceSN = mDeviceBeanList.get(position).getDeviceSN();
+                    }
+
+                    loadExecuteRecordData(Integer.parseInt(tvYear.getText().toString()), Integer.parseInt(tvMonth.getText().toString()), (mDeviceSN==null ? "" : mDeviceSN));
+                    tvSelect.setText(mDeviceBeanList.get(position).getRemarks());
+                    popupWindow.dismiss();
+                }
+            });
+
         }
+
+        @Override
+        public int getItemCount() {
+
+            return mDeviceBeanList.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            @Bind(R.id.tv_bind_device)
+            TextView tvBindDevice;
+
+            public ViewHolder(View view) {
+                super(view);
+                ButterKnife.bind(this, view);
+            }
+        }
+    }
+
+
+    class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            if (viewType == CONTENT) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_execute_record_recyclewview, parent, false);
+                return new MyViewHolder(view);
+            } else {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bind_listview, parent, false);
+                return new MyTitleViewHolder(view);
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+
+            if (viewHolder instanceof MyViewHolder) {
+                MyViewHolder holder = (MyViewHolder) viewHolder;
+                holder.tvDeviceName.setText(mLogListBeen.get(position).getTrigger_device_name());
+                holder.tvExecuteTrigger.setText(mLogListBeen.get(position).getExecuteInfo() + "");
+                holder.tvTime.setText(getHourMinute(mLogListBeen.get(position).getExecuteTime()));
+                if(mLogListBeen.get(position).getDeviceTypeId().equals("2")){
+                    holder.ivIcon.setImageResource(R.drawable.drw_1_intelligent_sos_icon);
+                }
+
+            } else if (viewHolder instanceof MyTitleViewHolder) {
+                MyTitleViewHolder holder = (MyTitleViewHolder) viewHolder;
+                holder.tvDeviceName.setText(getDayAndWeek(mLogListBeen.get(position).getExecuteTime()));
+            }
+
+        }
+
+
+        @Override
+        public int getItemViewType(int position) {
+            if (mLogListBeen.get(position).getType() == 1) {
+                return TITLE;
+            } else {
+                return CONTENT;
+            }
+        }
+
 
         @Override
         public int getItemCount() {
@@ -216,6 +429,18 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
                 ButterKnife.bind(this, view);
             }
         }
+
+        class MyTitleViewHolder extends RecyclerView.ViewHolder {
+
+            @Bind(R.id.tv_bind_device)
+            TextView tvDeviceName;
+
+            public MyTitleViewHolder(View view) {
+                super(view);
+                ButterKnife.bind(this, view);
+            }
+        }
+
     }
 
 
@@ -234,6 +459,5 @@ public class ExecuteRecordsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }

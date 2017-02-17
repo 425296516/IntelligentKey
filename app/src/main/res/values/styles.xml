@@ -22,7 +22,7 @@
 
         <item name="colorPrimary">@color/color_0099ff</item>
         <item name="colorPrimaryDark">@color/color_0099ff</item>
-        <item name="colorAccent">@color/color_0099ff</item>
+        <item name="colorAccent">@color/color_808080</item>
     </style>
 
     <!-- 对话框样式 -->
@@ -33,5 +33,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:scrollHorizontally">true</item>
     </style>
+
+
 
 </resources>

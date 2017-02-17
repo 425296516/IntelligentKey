@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:layout_gravity="center"
     android:background="@drawable/drw_1_juxing_white"
     android:gravity="bottom"
@@ -19,7 +19,7 @@
         <com.aigo.router.ui.view.PickerView
             android:id="@+id/minute_pv"
             android:layout_width="100dp"
-            android:layout_height="160dp" />
+            android:layout_height="140dp" />
 
         <TextView
             android:id="@+id/minute_tv"
@@ -35,7 +35,7 @@
         <com.aigo.router.ui.view.PickerView
             android:id="@+id/second_pv"
             android:layout_width="100dp"
-            android:layout_height="160dp"
+            android:layout_height="140dp"
             android:layout_toRightOf="@id/minute_tv" />
 
         <TextView
@@ -59,7 +59,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="50dp"
         android:layout_gravity="bottom"
         android:gravity="bottom"
         android:orientation="horizontal">
@@ -77,13 +77,13 @@
 
         <View
             android:layout_width="1px"
-            android:layout_height="38dp"
+            android:layout_height="match_parent"
             android:background="@color/color_cccccc" />
 
         <Button
             android:id="@+id/btn_ok"
             android:layout_width="match_parent"
-            android:layout_height="38dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/drw_1_dialog_delete_tip_bg"
             android:gravity="center"

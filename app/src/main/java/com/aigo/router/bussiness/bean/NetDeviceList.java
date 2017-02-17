@@ -60,7 +60,7 @@ public class NetDeviceList {
 
         private String deviceTypeId;
         private String typeName;
-        private Object typeIcon;
+        private String typeIcon;
         private int count;
         private List<DeviceBean> device;
 
@@ -80,11 +80,11 @@ public class NetDeviceList {
             this.typeName = typeName;
         }
 
-        public Object getTypeIcon() {
+        public String getTypeIcon() {
             return typeIcon;
         }
 
-        public void setTypeIcon(Object typeIcon) {
+        public void setTypeIcon(String typeIcon) {
             this.typeIcon = typeIcon;
         }
 

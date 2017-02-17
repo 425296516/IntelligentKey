@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="200dp"
+    android:layout_gravity="center"
+    android:background="@drawable/drw_1_juxing_white"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/color_333333"
+        android:textSize="16sp"
+        android:text="绑定失败"
+        android:id="@+id/textView11" />
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="110dp"
+      android:gravity="center_vertical|left"
+      android:textSize="16sp"
+      android:padding="20dp"
+      android:textColor="@color/color_333333"
+      android:text="未找到设备，请让设备靠近\n手机后重试。"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:background="@drawable/drw_1_dialog_delete_tip_bg"
+        android:gravity="center"
+        android:text="重新绑定"
+        android:textColor="@drawable/drw_1_dialog_select_bind_device_text"
+        android:textSize="14sp" />
+
+</LinearLayout>

@@ -64,10 +64,20 @@ public class ExecuteRecords
         private String sceneId;
         private String username;
         private String triggerSN;
+        private String deviceTypeId;
         private String executeResult;
         private String trigger_device_name;
         private String executeTime;
         private String executeInfo;
+        private int type;
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
 
         public String getId() {
             return id;
@@ -91,6 +101,14 @@ public class ExecuteRecords
 
         public void setUsername(String username) {
             this.username = username;
+        }
+
+        public String getDeviceTypeId(){
+            return deviceTypeId;
+        }
+
+        public void setDeviceTypeId(String deviceTypeId){
+            this.deviceTypeId = deviceTypeId;
         }
 
         public String getTriggerSN() {

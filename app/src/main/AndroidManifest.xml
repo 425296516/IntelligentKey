@@ -27,8 +27,8 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="场景"
-            android:theme="@style/LinkMan.Theme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/LinkMan.Theme">
 
             <!--
              <intent-filter>
@@ -42,8 +42,8 @@
             android:name=".ui.activity.ContactActivity"
             android:label="联系人"
             android:launchMode="singleTask"
-            android:theme="@style/LinkMan.Theme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/LinkMan.Theme" />
         <activity
             android:name=".ui.activity.ExecuteRecordsActivity"
             android:label="执行记录"
@@ -80,6 +80,7 @@
         <activity
             android:name=".ui.activity.ExecuteActionActivity"
             android:label="执行动作"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SplashActivity"
@@ -90,16 +91,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.DeviceListActivity"
+
+        <activity
+            android:name=".ui.activity.DeviceListActivity"
             android:label="智能按键"
-            android:theme="@style/LinkMan.Theme"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".ui.activity.GuideActivity" />
+            android:theme="@style/LinkMan.Theme" />
+
+        <activity
+            android:name=".ui.activity.GuideActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.activity.EditContactActivity"
             android:label="编辑联系人"
             android:screenOrientation="portrait" />
+
+
     </application>
 
 </manifest>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.aigo.router.R;
 import com.aigo.router.bussiness.bean.NetLinkman;
 import com.aigo.router.ui.activity.EditContactActivity;
+import com.aigo.router.ui.activity.ExecuteActionActivity;
 
 /**
  * Author:    ZhuWenWu
@@ -28,6 +29,7 @@ public class EditContactMultipleAdapter<T> extends BaseMultiSelectAdapter<T> {
     private static final String TAG = EditContactMultipleAdapter.class.getSimpleName();
     private OnActionModeCallBack onActionModeCallBack;
     private boolean isActionModeShow = false;
+    private static boolean isSelectContact;
     public Context mContext;
 
     public void setOnActionModeCallBack(OnActionModeCallBack onActionModeCallBack) {
@@ -49,9 +51,10 @@ public class EditContactMultipleAdapter<T> extends BaseMultiSelectAdapter<T> {
         }
     }
 
-    public EditContactMultipleAdapter(Context context) {
+    public EditContactMultipleAdapter(Context context,boolean isSelectContact) {
 
         super(context);
+        this.isSelectContact = isSelectContact;
         mContext = context;
     }
 
@@ -141,13 +144,25 @@ public class EditContactMultipleAdapter<T> extends BaseMultiSelectAdapter<T> {
                 }
                 mAdapter.notifyItemChanged(getPosition());
             } else {
-                Intent intent = new Intent(mContext, EditContactActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("CONTACT_ID",mLinkmanListBean.getLink_id());
-                intent.putExtra("CONTACT_NAME",mLinkmanListBean.getLink_name());
-                intent.putExtra("CONTACT_PHONE",mLinkmanListBean.getLink_no());
+                if(isSelectContact){
+                    Intent intent = new Intent(mContext, ExecuteActionActivity.class);
 
-                mContext.startActivity(intent);
+                    intent.putExtra("CONTACT_ID",mLinkmanListBean.getLink_id());
+                    intent.putExtra("CONTACT_NAME",mLinkmanListBean.getLink_name());
+                    intent.putExtra("CONTACT_PHONE",mLinkmanListBean.getLink_no());
+
+                    mContext.startActivity(intent);
+
+                }else{
+                    Intent intent = new Intent(mContext, EditContactActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("CONTACT_ID",mLinkmanListBean.getLink_id());
+                    intent.putExtra("CONTACT_NAME",mLinkmanListBean.getLink_name());
+                    intent.putExtra("CONTACT_PHONE",mLinkmanListBean.getLink_no());
+
+                    mContext.startActivity(intent);
+                }
+
             }
         }
 

@@ -21,7 +21,7 @@
     android:layout_height="200dp"
     android:layout_centerInParent="true"
     android:gravity="center"
-    android:background="@drawable/drw_1_shape_solid_rectangle_eeeeee"
+    android:background="@drawable/drw_1_shape_solid_rectangle_cccccc"
     android:orientation="vertical">
 
     <ImageView

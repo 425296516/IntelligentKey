@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aigo.router.R;
@@ -41,10 +40,10 @@ public class ExecuteActionActivity extends AppCompatActivity {
     TextView tvPhone;
     @Bind(R.id.tv_contact_name)
     TextView tvContactName;
-    @Bind(R.id.linear_contact)
-    LinearLayout linearContact;
     @Bind(R.id.tv_message)
     TextView tvMessage;
+    @Bind(R.id.tv_no_linkman)
+    TextView tvNoLinkman;
 
 
     private NetDeviceType.TypeListBean mTypeListBean;
@@ -110,16 +109,16 @@ public class ExecuteActionActivity extends AppCompatActivity {
                 });
     }
 
-    @OnClick(R.id.linear_contact)
+    @OnClick(R.id.relative_linkman)
     public void OnClickContact(View view) {
         Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
         intent.putExtra("SELECT_CONTACT", true);
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
 
     private AlertDialog exitDialog;
 
-    @OnClick(R.id.tv_message)
+    @OnClick(R.id.relative_message)
     public void OnClickMessage() {
         exitDialog = new AlertDialog.Builder(this).create();
         exitDialog.setCancelable(true);
@@ -135,6 +134,29 @@ public class ExecuteActionActivity extends AppCompatActivity {
         HomeAdapter mHomeAdapter = new HomeAdapter();
         recyclerView.setAdapter(mHomeAdapter);
 
+
+        TextView button = (TextView) window.findViewById(R.id.tv_cancel);
+        TextView baiduNavi = (TextView)window.findViewById(R.id.tv_confirm);
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                exitDialog.dismiss();
+            }
+        });
+
+        baiduNavi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                exitDialog.dismiss();
+            }
+        });
+
+
     }
 
     private List<String> mMessageList;
@@ -143,8 +165,10 @@ public class ExecuteActionActivity extends AppCompatActivity {
 
         @Override
         public HomeAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
             HomeAdapter.MyViewHolder holder = new HomeAdapter.MyViewHolder(LayoutInflater.from(
-                    getApplicationContext()).inflate(R.layout.item_contact_recyclerview, parent, false));
+                    getApplicationContext()).inflate(R.layout.item_bind_device_trigger, parent, false));
+
             return holder;
         }
 
@@ -171,10 +195,8 @@ public class ExecuteActionActivity extends AppCompatActivity {
 
         class MyViewHolder extends RecyclerView.ViewHolder {
 
-            @Bind(R.id.tv_contact_name)
+            @Bind(R.id.tv_bind_device)
             TextView tvContactName;
-            @Bind(R.id.tv_contact_phone)
-            TextView tvContactPhone;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -186,6 +208,18 @@ public class ExecuteActionActivity extends AppCompatActivity {
     private String mContactId;
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        mContactId = intent.getStringExtra("CONTACT_ID");
+        tvPhone.setText(intent.getStringExtra("CONTACT_PHONE"));
+        tvContactName.setText(intent.getStringExtra("CONTACT_NAME"));
+
+        tvNoLinkman.setVisibility(View.GONE);
+
+    }
+
+  /*  @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -195,7 +229,7 @@ public class ExecuteActionActivity extends AppCompatActivity {
             tvContactName.setText(data.getStringExtra("CONTACT_NAME"));
         }
 
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

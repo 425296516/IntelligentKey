@@ -84,7 +84,7 @@ public class ContactActivity extends AppCompatActivity {
                             recyclerView.setLayoutManager(new LinearLayoutManager(ContactActivity.this));
                             recyclerView.addItemDecoration(new DividerItemDecoration(ContactActivity.this, DividerItemDecoration.VERTICAL_LIST));
 
-                            mAdapter = new EditContactMultipleAdapter(ContactActivity.this);
+                            mAdapter = new EditContactMultipleAdapter(ContactActivity.this,isSelectContact);
                             mAdapter.addItems(contactList);
                             recyclerView.setAdapter(mAdapter);
                             mAdapter.setOnActionModeCallBack(new EditContactMultipleAdapter.OnActionModeCallBack() {

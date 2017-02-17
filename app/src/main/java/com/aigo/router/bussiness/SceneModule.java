@@ -50,11 +50,13 @@ public class SceneModule {
     }
 
     //1.用户绑定设备(app端调用)：UserBindDevice.json
-    public Observable<ResultObject> UserBindDevice(final String username, final String deviceSN
+    public Observable<ResultObject> UserBindDevice(final String username, final String device
             , final String deviceName, final String deviceType, final String remarks) {
         return Observable.defer(new Func0<Observable<String>>() {
             @Override
             public Observable<String> call() {
+
+                String deviceSN = device.replace(":", "").toLowerCase();
 
                 String url = "http://api.aigolife.com/device/UserBindDevice.json";
                 String urlStr = new StringBuffer(url)
@@ -91,7 +93,7 @@ public class SceneModule {
                 String url = "http://api.aigolife.com/device/UserUnbindDevice.json";
                 String urlStr = new StringBuffer(url)
                         .append("?username=").append(username)
-                        .append("&deviceSN_list=").append(deviceSN)
+                        .append("&deviceSN_list=").append(new Gson().toJson(deviceSN))
                         .toString();
 
                 Log.d(TAG, urlStr);
@@ -473,16 +475,18 @@ public class SceneModule {
 
 
     //15.获取用户场景执行日志(app端调用)：getSceneLog.json
-    public Observable<ExecuteRecords> getSceneLog(final String username, final int year, final int month) {
+    public Observable<ExecuteRecords> getSceneLog(final String username, final int year, final int month,final String device) {
         return Observable.defer(new Func0<Observable<String>>() {
             @Override
             public Observable<String> call() {
 
+                String deviceSN = device.replace(":", "").toLowerCase();
                 String url = "http://api.aigolife.com/device/getSceneLog.json";
                 String urlStr = new StringBuffer(url)
                         .append("?username=").append(username)
                         .append("&year=").append(year)
                         .append("&month=").append(month)
+                        .append("&deviceSN=").append(deviceSN)
                         .toString();
 
                 Log.d(TAG, urlStr);

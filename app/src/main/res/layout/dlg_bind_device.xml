@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="280dp"
-    android:layout_height="170dp"
-
+    android:layout_width="230dp"
+    android:layout_height="152dp"
+    android:background="@drawable/drw_1_juxing_white"
     android:layout_gravity="center"
     android:orientation="vertical">
 
@@ -12,38 +12,29 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="提示"
+        android:textColor="@color/color_333333"
         android:textSize="16sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="#d7d7d7" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:gravity="center"
-        android:text="检测到您还没有绑定任何设备，快去绑定再使用吧！"
-        android:textColor="#797979"
+        android:text="AppName检测您还未\n绑定任何设备，快去绑定吧"
+        android:textColor="@color/color_333333"
         android:textSize="14sp" />
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="#d7d7d7" />
-
     <TextView
         android:id="@+id/tv_bind_device"
-        android:layout_width="108dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="起驾一起去绑定" />
+        android:textColor="@drawable/drw_1_dialog_select_bind_device_text"
+        android:background="@drawable/drw_1_dialog_delete_tip_bg"
+        android:text="起驾～去绑定" />
 
 
 </LinearLayout>

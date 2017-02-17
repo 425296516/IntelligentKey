@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- android:shape指定形状类型，默认为rectangle -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
+    android:shape="rectangle">
 
-    <size android:height="5dp" android:width="5dp" />
+    <size android:height="200dp" android:width="100dp" />
 
-    <!--填充色-->
-    <solid android:color="@color/color_f43531"/>
-
+    <stroke
+        android:width="1px"
+        android:color="#cccccc"/>
 
 </shape>

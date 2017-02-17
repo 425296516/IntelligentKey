@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="264dp"
-    android:layout_height="210dp"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
    >
@@ -9,18 +9,18 @@
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:text="修改备注"
+        android:text="添加设备备注"
         android:textColor="@color/color_333333"
         android:textSize="16sp" />
 
 
     <RelativeLayout
-        android:layout_width="240dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="40dp"
+        android:layout_width="210dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
         android:gravity="center"
         android:layout_gravity="center"
         android:background="@drawable/drw_1_shape_solid_rectangle_f3f3f3"
@@ -29,9 +29,9 @@
 
         <EditText
             android:id="@+id/et_input_remark"
-            android:layout_width="240dp"
-            android:layout_height="50dp"
-            android:hint="请输入名称"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:hint="如：SOS-厨房"
             android:maxEms="10"
             android:maxLength="10"
             android:paddingLeft="5dp"
@@ -62,7 +62,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:gravity="bottom">
@@ -72,11 +72,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="@drawable/drw_1_dialog_delete_tip_text"
+            android:textColor="@drawable/drw_1_dialog_select_bind_device_text"
             android:textSize="14sp"
             android:background="@drawable/drw_1_dialog_delete_tip_bg"
             android:gravity="center"
-            android:text="取消"/>
+            android:text="稍后"/>
 
         <View
             android:layout_width="1px"
@@ -88,11 +88,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="@drawable/drw_1_dialog_delete_tip_text"
+            android:textColor="@drawable/drw_1_dialog_select_bind_device_text"
             android:textSize="14sp"
             android:background="@drawable/drw_1_dialog_delete_tip_bg"
             android:gravity="center"
-            android:text="确定"/>
+            android:text="保存"/>
 
     </LinearLayout>
 

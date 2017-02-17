@@ -1,5 +1,6 @@
 package com.aigo.router.ui.activity;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -10,12 +11,19 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +37,7 @@ import com.aigo.usermodule.business.UserModule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -158,7 +167,173 @@ public class BindDeviceActivity extends AppCompatActivity {
             }
         };
 
+        for(int i=0;i<2;i++){
+
+            mDeviceSNList.add("sos"+i);
+
+        }
+
+        //onClickSelectBindDevice();
+
+        onClickAddDeviceRemark();
+
+        //onClickBindFailure();
     }
+
+
+    public void onClickSelectBindDevice() {
+
+        final AlertDialog exitDialog = new AlertDialog.Builder(this, R.style.Theme_Light_Dialog).create();
+        exitDialog.show();
+        Window window = exitDialog.getWindow();
+        window.setContentView(R.layout.dialog_select_bind_device);
+
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        //设置窗口高度为包裹内容
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+
+        RecyclerView recyclerView = (RecyclerView) window.findViewById(R.id.recycler_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new SelectDeviceAdapter());
+
+        Button ok = (Button) window.findViewById(R.id.btn_ok);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                exitDialog.dismiss();
+
+            }
+        });
+
+
+    }
+
+
+    public void onClickAddDeviceRemark() {
+
+        final AlertDialog exitDialog = new AlertDialog.Builder(this, R.style.Theme_Light_Dialog).create();
+        exitDialog.show();
+        Window window = exitDialog.getWindow();
+        window.setContentView(R.layout.dialog_add_device_remark);
+
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        //设置窗口高度为包裹内容
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+
+        EditText editText = (EditText) window.findViewById(R.id.et_input_remark);
+
+        Button cancel = (Button) window.findViewById(R.id.btn_cancel);
+
+        Button ok = (Button) window.findViewById(R.id.btn_ok);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                exitDialog.dismiss();
+
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                exitDialog.dismiss();
+
+            }
+        });
+
+
+    }
+
+
+    public void onClickBindFailure() {
+
+        final AlertDialog exitDialog = new AlertDialog.Builder(this, R.style.Theme_Light_Dialog).create();
+        exitDialog.show();
+        Window window = exitDialog.getWindow();
+        window.setContentView(R.layout.dialog_bind_device_failure);
+
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        //设置窗口高度为包裹内容
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+
+        Button ok = (Button) window.findViewById(R.id.btn_ok);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                exitDialog.dismiss();
+
+            }
+        });
+
+
+    }
+
+    private List<String> mDeviceSNList = new ArrayList<>();
+
+    class SelectDeviceAdapter extends RecyclerView.Adapter<SelectDeviceAdapter.ViewHolder> {
+
+        @Override
+        public SelectDeviceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            SelectDeviceAdapter.ViewHolder holder = new SelectDeviceAdapter.ViewHolder(LayoutInflater.from(
+                    getApplicationContext()).inflate(R.layout.item_bind_device_trigger, parent, false));
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(SelectDeviceAdapter.ViewHolder holder, final int position) {
+
+            holder.tvBindDevice.setText(mDeviceSNList.get(position));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+
+            return mDeviceSNList.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            @Bind(R.id.tv_bind_device)
+            TextView tvBindDevice;
+
+            public ViewHolder(View view) {
+                super(view);
+                ButterKnife.bind(this, view);
+            }
+        }
+    }
+
 
     @OnClick(R.id.btn_start_bind)
     public void OnClickStartBind() {

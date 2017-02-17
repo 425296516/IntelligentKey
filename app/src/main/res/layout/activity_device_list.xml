@@ -4,13 +4,14 @@
     android:id="@+id/activity_device_manager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f4f4f4"
+    android:background="@color/color_efeff4"
     tools:context=".ui.activity.DeviceManagerActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -18,7 +19,7 @@
     <LinearLayout
         android:id="@+id/linear_select_bottom"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:visibility="gone"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"

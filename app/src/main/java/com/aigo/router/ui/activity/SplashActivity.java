@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
 
         //友盟统计用户登录
         if (UserModule.getInstance().isLogin()) {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, GuideActivity.class));
             finish();
         } else {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

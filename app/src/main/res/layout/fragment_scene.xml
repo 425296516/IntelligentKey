@@ -2,14 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_efeff4"
     tools:context=".ui.fragment.SceneFragment">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
 
 
     <LinearLayout
@@ -30,22 +24,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="35dp"
             android:text="当前还没有场景条件"
             android:textColor="@color/color_525254" />
 
 
         <Button
             android:id="@+id/btn_add_scene"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_width="160dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="35dp"
             android:background="@drawable/drw_1_shape_rectangle_018ffd"
-            android:paddingLeft="33dp"
-            android:paddingRight="33dp"
             android:text="立即添加"
             android:textColor="@color/color_ffffff" />
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>
